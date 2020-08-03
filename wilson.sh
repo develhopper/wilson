@@ -1,7 +1,7 @@
 #!/bin/bash
 function run(){
-        echo $1
-        result=$(grep -P "^$1(?=-)" $HOME/.wilsonrc)
+        #echo $1
+        result=$(grep -P "^$1(?=[-\=])" $HOME/.wilsonrc)
         if [ -z "$result" ]
         then
             echo "command not found"
@@ -12,12 +12,14 @@ function run(){
         eval $cmd
         echo
 }
-echo -e "\033[1;31m"
+InColor='\033[1;37m' # Input color
+OutColor='\033[0;31m' # Output color
 if [ -z $1 ]
 then
         while :
         do
-            read -p "Wilson(: " cmd
+			echo -en "${OutColor}Wilson(: ${InColor}"
+            read cmd
             if [[ "$cmd" == "exit" ]]; then
                     break
             fi
