@@ -1,5 +1,9 @@
 sudo->sudo echo "sudo"
 
+start {}->sudo systemctl start {}
+status {}->systemctl statis {}
+stop {}->sudo systemctl stop {}
+
 new->vi ~/.wilsonrc
 
 edit->vi ~/.local/bin/wilson
@@ -7,12 +11,5 @@ edit->vi ~/.local/bin/wilson
 clear->clear
 
 help->cat ~/.wilsonrc
-
-webserver on->systemctl start apache2 mysql
-webserver off->systemctl stop apache2 mysql
-webserver stat->systemctl status apache2 mysql
-
-tor on->sudo systemctl start tor
-tor off->sudo systemctl stop tor
 
 say hi->echo "Hi my name is wilson"

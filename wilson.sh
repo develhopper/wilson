@@ -1,14 +1,27 @@
 #!/bin/bash
 function run(){
-        #echo $1
-        result=$(grep -P "^$1(?=[-\=])" $HOME/.wilsonrc)
+		result=$(grep -P "^$1\s?(\{\}|$2)?(?=[-\=])" $HOME/.wilsonrc)
+		echo $result
         if [ -z "$result" ]
         then
             echo "command not found"
             return
         fi
-        cmd=$(echo "$result"|grep -oP '(?<=\>).*');
-        echo -e "starting ..."
+		count=$(echo $result | awk -F"->" '{print NF-1}')
+		if [[ $count -ge 2 ]];then
+				echo -en "Error: ${OutColor}config file syntax is incorrect - duplicate commands\n"
+				return
+		fi
+
+		cmd=$(echo "$result"|grep -oP '(?<=\>).*');
+		if [[ $cmd == *"{}"* ]];then
+			if [[ -z $2 ]];then
+				echo "Invalid parameters"
+				return
+			fi
+			cmd=$(echo "$cmd" | sed "s/{}/$2/g")
+		fi
+		echo $cmd
         eval $cmd
         echo
 }
@@ -23,12 +36,9 @@ then
             if [[ "$cmd" == "exit" ]]; then
                     break
             fi
-            run "$cmd"
+			params=($cmd)
+            run ${params[@]}
         done
 else
-        param=$1
-        if ! [ -z $2 ]; then
-            param="$1 $2"
-        fi
-        run "$param"
+        run $@
 fi
