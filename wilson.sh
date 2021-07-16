@@ -1,7 +1,6 @@
 #!/bin/bash
 function run(){
 		result=$(grep -P "^$1\s?(\{\}|$2)?(?=[-\=])" $HOME/.wilsonrc)
-		echo $result
         if [ -z "$result" ]
         then
             echo "command not found"
