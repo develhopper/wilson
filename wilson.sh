@@ -20,7 +20,6 @@ function run(){
 			fi
 			cmd=$(echo "$cmd" | sed "s/{}/$2/g")
 		fi
-		echo $cmd
         eval $cmd
         echo
 }
